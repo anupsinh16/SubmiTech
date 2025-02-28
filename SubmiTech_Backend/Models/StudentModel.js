@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const subObj ={
+    labName : String,
+    checked : Boolean
+}
+
 const StudentModel = new mongoose.Schema(
     {
         rollno: {
@@ -42,12 +47,7 @@ const StudentModel = new mongoose.Schema(
         },
 
         labSub: {
-            type: [String],
-            required: true
-        },
-
-        subCheck: {
-            type: [Boolean],
+            type: [subObj],
             required: true
         }
     },

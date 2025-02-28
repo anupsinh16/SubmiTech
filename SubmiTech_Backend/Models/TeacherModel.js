@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const labObj = {
+    labName:String,
+    batch:[String]
+}
+
 const TeacherModel = new mongoose.Schema(
     {
         name : {
@@ -22,8 +27,8 @@ const TeacherModel = new mongoose.Schema(
             required : true
         },
 
-        Batch : {
-            type : [String],
+        batchesAlloted : {
+            type : [labObj],
             required : true
         },
 
