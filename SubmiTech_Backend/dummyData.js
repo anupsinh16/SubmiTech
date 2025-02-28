@@ -157,7 +157,7 @@ const Dteachers = [
         email: "richard.green@example.com",
         department: "Computer Science",
         password: "teacher123",
-        BatchesAlloted: [
+        batchesAlloted: [
             { labName: "DBMS", batch: ["B1", "B2"] },
             { labName: "OS", batch: ["B1", "B2"] },
             { labName: "CN", batch: ["B1", "B2"] }
@@ -169,7 +169,7 @@ const Dteachers = [
         email: "laura.johnson@example.com",
         department: "Mechanical",
         password: "mechProf456",
-        BatchesAlloted: [
+        batchesAlloted: [
             { labName: "Thermodynamics", batch: ["B3"] },
             { labName: "Fluid Mechanics", batch: ["B3"] },
             { labName: "CAD", batch: ["B3"] }
