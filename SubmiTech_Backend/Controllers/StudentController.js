@@ -5,7 +5,8 @@ const FetchStudentStatus = async (req,res) => {
         const {rollno} = req.body;
 
         const student = await Students.findOne({ rollno: rollno });
-        console.log(student);
+        //console.log(student);
+        res.status(200).json({message : "successfully fetched student"});
         
     }
     catch(err){
