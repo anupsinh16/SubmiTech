@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
-  const [current, setCurrent] = useState('Home');
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
@@ -11,7 +12,10 @@ const Navbar = () => {
       <div className="flex justify-between items-center px-6 py-2">
         {/* Logo and Title */}
         <div className="flex items-center space-x-3">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" alt="Logo" className="max-h-12 border border-white/50 rounded-xl shadow-lg" />
+          <a href='https://pict.edu/'><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" 
+            alt="Logo" 
+            className="max-h-12 border border-white/50 rounded-xl shadow-lg" 
+          /></a>
           <h1 className="font-bold text-lg text-blue-500 tracking-wide drop-shadow-md">SubmiTech</h1>
         </div>
 
@@ -40,22 +44,26 @@ const Navbar = () => {
           }`}
         >
           <ul className="flex flex-col lg:flex-row lg:justify-center lg:items-center py-2 lg:py-0 font-medium space-y-2 lg:space-y-0 lg:space-x-6">
-            {['Home', 'Student', 'Teacher', 'Admin'].map((item) => (
-              <li
-                key={item}
-                className={`cursor-pointer text-gray-800 text-sm tracking-wide transition duration-300 px-4 py-1 rounded-xl shadow-lg ${
-                  current === item
-                    ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white'
-                    : 'hover:bg-gradient-to-r from-purple-300 to-pink-300 text-gray-900'
-                }`}
-                onClick={() => {
-                  setCurrent(item);
-                  setIsOpen(false);
-                }}
-              >
-                <a href={`/${item.replace(' ', '').toLowerCase() === 'home' ? '' : item.replace(' ', '').toLowerCase()}`}>{item}</a>
+            {['Home', 'Student', 'Teacher', 'Admin'].map((item) => {
+              const path = item.toLowerCase() === 'home' ? '/' : `/${item.toLowerCase()}`;
+              const isActive = location.pathname === path;
+
+              return (
+                <li key={item} className="text-center">
+                  <Link
+                    to={path}
+                    className={`cursor-pointer text-sm tracking-wide transition duration-300 px-4 py-1 rounded-xl shadow-lg ${
+                      isActive
+                        ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white'
+                        : 'hover:bg-gradient-to-r from-purple-300 to-pink-300 text-gray-900'
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item}
+                  </Link>
                 </li>
-            ))}
+              );
+            })}
 
             <li>
               {isLoggedIn && (
