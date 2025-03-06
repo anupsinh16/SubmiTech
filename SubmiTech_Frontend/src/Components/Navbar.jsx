@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { use } from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const Navbar = () => {
   const [current, setCurrent] = useState('Home');
@@ -8,70 +7,71 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
-    <>
-    
-      <div className="sticky top-0 z-50 backdrop-blur-lg bg-violet-200/30 border border-white/20 shadow-lg">
-        <div className="flex justify-between items-center px-10 py-2">
-          {/* Logo and Title */}
-          <div className="flex items-center space-x-3">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" alt="Logo" className="max-h-16 border rounded-2xl shadow-2xl" />
-            <h1 className="font-bold text-xl ">SubmiTech</h1>
-          </div>
+    <div className="sticky top-0 z-50 backdrop-blur-lg bg-gradient-to-r from-blue-300/40 via-purple-300/40 to-pink-300/40 border border-white/30 shadow-xl rounded-b-2xl">
+      <div className="flex justify-between items-center px-6 py-2">
+        {/* Logo and Title */}
+        <div className="flex items-center space-x-3">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" alt="Logo" className="max-h-12 border border-white/50 rounded-xl shadow-lg" />
+          <h1 className="font-bold text-lg text-blue-500 tracking-wide drop-shadow-md">SubmiTech</h1>
+        </div>
 
-          {/* Hamburger Menu (Small Screens) */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 focus:outline-none hover:text-pink-300"
-            >
-              {isOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-              )}
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <div
-            className={`lg:flex lg:w-auto lg:static w-full absolute bg-white/30 lg:bg-transparent transition-all duration-300 ease-in-out ${
-              isOpen ? 'top-20 left-0 right-0 px-6' : 'top-[-500px]'
-            }`}
+        {/* Hamburger Menu (Small Screens) */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-800 focus:outline-none hover:text-pink-500 transition duration-300 p-2 rounded-md bg-white/60 backdrop-blur-md"
           >
-            <ul className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 lg:py-0 font-semibold space-y-3 lg:space-y-0 lg:space-x-6">
-              {['Home','Student','Teacher','Admin'].map((item) => (
-                
-                <li
-                  key={item}
-                  className={`cursor-pointer ${
-                    current === item
-                      ? 'text-white bg-violet-400 transition duration-300 border border-transparent rounded-2xl px-3 py-1'
-                      : 'hover:bg-violet-300 transition duration-300 border border-transparent rounded-2xl px-3 py-1'
-                  }`}
-                  onClick={() => {
-                    setCurrent(item);
-                    setIsOpen(false); // Close the menu on small screens
-                  }}
-                >
-                  <a to={`/${(item.replace(' ', '').toLowerCase() === "home")?'':item.replace(' ', '').toLowerCase()}`}>{item}</a>
-                </li>
-                
-              ))}
+            {isOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            )}
+          </button>
+        </div>
 
-              <li>
-              {isLoggedIn && (<button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-700 focus:ring-4
-               focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-500 dark:hover:bg-red-600">Log-Out</button>)}
-              </li>
-            </ul>
-          </div>
+        {/* Navigation Links */}
+        <div
+          className={`lg:flex lg:w-auto lg:static w-full absolute transition-all duration-500 ease-in-out backdrop-blur-md rounded-2xl p-4 shadow-lg ${
+            isOpen ? 'top-12 left-4 right-4 bg-gradient-to-r from-white/70 via-gray-200/70 to-white/70 text-gray-900 rounded-lg' : 'top-[-500px]'
+          }`}
+        >
+          <ul className="flex flex-col lg:flex-row lg:justify-center lg:items-center py-2 lg:py-0 font-medium space-y-2 lg:space-y-0 lg:space-x-6">
+            {['Home', 'Student', 'Teacher', 'Admin'].map((item) => (
+              <li
+                key={item}
+                className={`cursor-pointer text-gray-800 text-sm tracking-wide transition duration-300 px-4 py-1 rounded-xl shadow-lg ${
+                  current === item
+                    ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white'
+                    : 'hover:bg-gradient-to-r from-purple-300 to-pink-300 text-gray-900'
+                }`}
+                onClick={() => {
+                  setCurrent(item);
+                  setIsOpen(false);
+                }}
+              >
+                <a href={`/${item.replace(' ', '').toLowerCase() === 'home' ? '' : item.replace(' ', '').toLowerCase()}`}>{item}</a>
+                </li>
+            ))}
+
+            <li>
+              {isLoggedIn && (
+                <button
+                  type="button"
+                  className="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-300 font-medium rounded-lg text-xs px-4 py-2 shadow-lg"
+                >
+                  Log-Out
+                </button>
+              )}
+            </li>
+          </ul>
         </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default Navbar
+export default Navbar;
