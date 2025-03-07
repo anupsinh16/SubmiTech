@@ -3,9 +3,9 @@ const Students = require("../Models/StudentModel");
 
 const FetchTeacherInfo = async(req, res) => {
     try{
-        const {email} = req.body;
+        const {email} = req.query;
 
-        const teacher = await Teachers.findOne({ email }, { batchesAlloted: 1, _id: 0 });
+        const teacher = await Teachers.findOne({ email });
         res.status(200).json(teacher);
         // console.log(teacher);
 
@@ -17,7 +17,7 @@ const FetchTeacherInfo = async(req, res) => {
 
 const UpdateStatus = async (req, res) => {
     try {
-        const { rollno, labName } = req.body;
+        const { rollno, labName } = req.query;
 
         const student = await Students.findOne({ rollno, "labSub.labName": labName });
 
@@ -40,7 +40,7 @@ const UpdateStatus = async (req, res) => {
 
 const FetchStudentList = async(req,res) => {
     try{
-        const{batch} = req.body;
+        const{batch} = req.query;
 
         const studentList = await Students.find({"batch":batch});
 
