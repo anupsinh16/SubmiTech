@@ -10,7 +10,7 @@ const StudentPortal = () => {
         const FetchStudData = async () => {
             try {
                 const response = await axios.get("http://localhost:1817/stud/student", {
-                    params: { rollno: 106 },
+                    params: { rollno: 101 },
                 });
                 setStudData(response.data);
             } catch (err) {
@@ -39,7 +39,7 @@ const StudentPortal = () => {
                         <thead>
                             <tr className="bg-purple-500 text-white">
                                 <th className="border p-3 text-lg">Lab Name</th>
-                                <th className="border p-3 text-lg">Enrolled</th>
+                                <th className="border p-3 text-lg">Status</th>
                             </tr>
                         </thead>
                         <tbody>

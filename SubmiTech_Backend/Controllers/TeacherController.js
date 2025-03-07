@@ -17,7 +17,7 @@ const FetchTeacherInfo = async(req, res) => {
 
 const UpdateStatus = async (req, res) => {
     try {
-        const { rollno, labName } = req.query;
+        const { rollno, labName } = req.body;
 
         const student = await Students.findOne({ rollno, "labSub.labName": labName });
 
