@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
+const NewNavbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -12,7 +12,7 @@ const Navbar = () => {
       <div className="flex justify-between items-center px-6 py-2">
         {/* Logo and Title */}
         <div className="flex items-center space-x-3">
-          <a href='https://pict.edu/'><img src="https://pict.edu/images/pic.jpg" 
+          <a href='https://pict.edu/'><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" 
             alt="Logo" 
             className="max-h-12 border border-white/50 rounded-xl shadow-lg" 
           /></a>
@@ -82,4 +82,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NewNavbar;

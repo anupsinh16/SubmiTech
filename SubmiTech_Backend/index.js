@@ -6,6 +6,7 @@ const Teacher = require("./Models/TeacherModel");
 const { FetchStudentStatus } = require("./Controllers/StudentController");
 const { FetchTeacherInfo, UpdateStatus, FetchStudentList } = require("./Controllers/TeacherController");
 const StudRoutes = require("./Routes/StudentRoutes");
+const AuthenticationRoutes = require("./Routes/AuthenticationRoutes");
 const TeachRoutes = require("./Routes/TeacherRoutes");
 const cors = require("cors");
 
@@ -20,6 +21,7 @@ app.use(cors());  // Allow all origins temporarily
 // Routes
 app.use('/Stud', StudRoutes);
 app.use('/Teach', TeachRoutes);
+app.use('/Authentication', AuthenticationRoutes);
 
 // Database connection
 const ConnectDB = async () => {
