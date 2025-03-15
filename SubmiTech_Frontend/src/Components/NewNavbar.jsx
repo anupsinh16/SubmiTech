@@ -1,12 +1,29 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 const NewNavbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  
 
+
+  useEffect(()=>{
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+  },[])
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/student"); 
+    window.location.reload();
+};
   return (
     <div className="sticky top-0 z-50 backdrop-blur-lg bg-gradient-to-r from-blue-300/40 via-purple-300/40 to-pink-300/40 border border-white/30 shadow-xl rounded-b-2xl">
       <div className="flex justify-between items-center px-6 py-2">
@@ -68,6 +85,7 @@ const NewNavbar = () => {
             <li>
               {isLoggedIn && (
                 <button
+                  onClick={()=>handleLogout()}
                   type="button"
                   className="focus:outline-none text-white bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-300 font-medium rounded-lg text-xs px-4 py-2 shadow-lg"
                 >

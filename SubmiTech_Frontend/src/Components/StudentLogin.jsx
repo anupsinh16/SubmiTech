@@ -10,17 +10,29 @@ const StudentLogin = () => {
   const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
+  const addUserToLocalStorage = ({  user, token }) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault(); 
-
+    
     try {
-      const response = await axios.get("http://localhost:1817/Authentication/student", {
+      const response = await axios.get("http://localhost:1817/Authentication/authstud", {
         params: { rollno: enrollment, password },
       });
 
       if (response.data.success) {
-        navigate("/student-portal", { state: { rollno: enrollment } });
+        const { user, token } = response.data;
+        addUserToLocalStorage({ user, token });
+        if(user){
+          navigate("/student-portal");
+          window.location.reload();
+        }
+        
       } 
+
       else if(!response.data.message) {
         setErrorMessage("Incorrect Roll No or Password");
         setShowModal(true);
