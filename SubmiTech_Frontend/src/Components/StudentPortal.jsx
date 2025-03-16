@@ -1,15 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
-//const user = JSON.parse(localStorage.getItem("user") || "{}");
+import { useNavigate } from "react-router-dom";
 
 const StudentPortal = () => {
     const [StudData, setStudData] = useState(null);
-    const [user,setUser] = useState(()=>JSON.parse(localStorage.getItem("user") || "{}"));
-    const location = useLocation();
-    //const { rollno } = location.state || {};
-    const {rollno} = user;
+    const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,44 +13,50 @@ const StudentPortal = () => {
             const FetchStudData = async () => {
                 try {
                     const response = await axios.get("http://localhost:1817/Stud/student", {
-                        params: { rollno },
+                        params: { rollno: user.rollno },
                     });
                     setStudData(response.data);
-
                 } catch (err) {
                     console.error("Error fetching data:", err);
                 }
             };
             FetchStudData();
         }
-       
-    }, [user,rollno]);
+
+        // Prevent going back after logout
+        // window.history.replaceState(null, "", window.location.href);
+        // window.onpopstate = () => {
+        //     setUser(null); // Ensure user data is cleared on back navigation
+        // };
+    }, [user]);
 
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         setUser(null);
-        navigate("/student"); 
+        navigate("/student");
         window.location.reload();
     };
+
+    if (!user || !user.rollno) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+                <p className="text-gray-800 text-lg font-semibold mb-4">Please login first</p>
+                <button
+                    onClick={() => navigate("/student")}
+                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
+                >
+                    Go to login page
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-50 to-purple-100 p-6 relative">
             <div className="absolute inset-0 bg-gradient-to-b from-purple-300 to-transparent opacity-50"></div>
 
-            {!user || !user.rollno ? (
-                <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-                <p className="text-gray-800 text-lg font-semibold mb-4">
-                  Please login first
-                </p>
-                <button
-                  onClick={() => navigate("/student")}
-                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition rounded"
-                >
-                  Go to login page
-                </button>
-              </div>
-            ) : !StudData ? (
+            {!StudData ? (
                 <p className="text-gray-800 text-lg font-semibold">Loading...</p>
             ) : (
                 <div className="relative bg-white shadow-2xl rounded-2xl p-8 max-w-xl w-full border border-gray-300">

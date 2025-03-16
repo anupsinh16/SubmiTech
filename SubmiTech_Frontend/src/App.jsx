@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
-import NewNavbar from './Components/newNavbar';
+import NewNavbar from './Components/NewNavbar';
 import StudentPortal from './Components/StudentPortal';
 import TeacherPortal from './Components/TeacherPortal';
 import TeacherPortal2 from './Components/TeacherPortal2';

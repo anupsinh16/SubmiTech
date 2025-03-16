@@ -10,7 +10,7 @@ const authenticateStudent = async (req, res) => {
         const stud = await Students.findOne({rollno});
 
         if(!stud){
-            res.json({
+            return res.json({
                 success : false,
                 message : "Student not found, Enter valid credentials",
             });
