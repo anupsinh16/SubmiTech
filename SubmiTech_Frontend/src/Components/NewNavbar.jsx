@@ -17,7 +17,7 @@ const NewNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    navigate("/student");
+    navigate("/");
     window.location.reload();
   };
 

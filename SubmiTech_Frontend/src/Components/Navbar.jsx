@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 const user = localStorage.getItem("user");
+
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);

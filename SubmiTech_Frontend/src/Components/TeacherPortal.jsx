@@ -7,6 +7,7 @@ const TeacherPortal = () => {
     const [TeacherData, setTeacherData] = useState(null);
     const [selectedLab, setSelectedLab] = useState(null);
     const navigate = useNavigate();
+    const user = localStorage.getItem("user");
 
     useEffect(() => {
         const FetchTeacherData = async () => {
@@ -25,6 +26,20 @@ const TeacherPortal = () => {
     const toggleLab = (labId) => {
         setSelectedLab((prev) => (prev === labId ? null : labId));
     };
+
+    if (!user) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+                <p className="text-gray-800 text-lg font-semibold mb-4">Please login first</p>
+                <button
+                    onClick={() => navigate("/teacher")}
+                    className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
+                >
+                    Go to login page
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 to-purple-300 p-6">
@@ -61,7 +76,7 @@ const TeacherPortal = () => {
                                                 {labObj.batch.map((batch, index) => (
                                                     <li key={index}>
                                                         <button
-                                                            onClick={() => navigate("/teacher2", { state: { batch1: batch, labName: labObj.labName } })}
+                                                            onClick={() => navigate("/teacher-portal2", { state: { batch1: batch, labName: labObj.labName } })}
                                                             className="text-blue-600 hover:underline font-medium"
                                                         >
                                                             {batch}
