@@ -25,7 +25,7 @@ const NewNavbar = () => {
     <div className="sticky top-0 z-50 backdrop-blur-lg bg-gradient-to-r from-blue-300/40 via-purple-300/40 to-pink-300/40 border border-white/30 shadow-xl rounded-b-2xl">
       <div className="flex justify-between items-center px-6 py-2">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-3">
+        <div className={`flex items-center space-x-3 ${isOpen === true ?"flex-col":"flex-row"}`}>
           <a href='https://pict.edu/'>
             <img 
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s" 

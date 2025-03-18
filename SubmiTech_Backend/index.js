@@ -8,6 +8,7 @@ const { FetchTeacherInfo, UpdateStatus, FetchStudentList } = require("./Controll
 const StudRoutes = require("./Routes/StudentRoutes");
 const AuthenticationRoutes = require("./Routes/AuthenticationRoutes");
 const TeachRoutes = require("./Routes/TeacherRoutes");
+const AdminRoutes = require("./Routes/AdminRoutes");
 const cors = require("cors");
 
 const PORT = 1817;
@@ -22,6 +23,7 @@ app.use(cors());  // Allow all origins temporarily
 app.use('/Stud', StudRoutes);
 app.use('/Teach', TeachRoutes);
 app.use('/Authentication', AuthenticationRoutes);
+app.use('/Admin', AdminRoutes);
 
 // Database connection
 const ConnectDB = async () => {
