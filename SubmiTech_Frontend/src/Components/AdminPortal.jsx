@@ -7,6 +7,7 @@ const AdminPortal = () => {
   const [teachers, setTeachers] = useState([]);
   const [labs, setLabs] = useState([]);
   const [selectedrollno, setSelectedrollno] = useState(null);
+  const [addstud, setAddstud] = useState(false);
 
   const handleStudent = async () => {
     try {
@@ -26,6 +27,50 @@ const AdminPortal = () => {
     }
   };
 
+  const handleaddstud = async (e) => {
+    e.preventDefault(); // Prevent page reload
+  
+    try {
+      const formData = new FormData(e.target); // e.target is the form element
+  
+      const data = Object.fromEntries(formData.entries());
+  
+      console.log("Form Data:", data);
+
+      const labsub = [
+        data.labName1,
+        data.labName2,
+        data.labName3,
+        data.labName4,
+        data.labName5
+      ]
+        .filter((name) => name && name.length > 0)
+        .map((name) => ({
+          labName: name,
+          checked: false
+        }));
+
+      const newstud = {
+        
+          "rollno":data.rollno,
+          "name":data.name,
+          "password":data.password,
+          "department":data.department,
+          "academicYear":data.academicYear,
+          "sem":data.sem,
+          "div":data.div,
+          "batch":data.batch,
+          "labsub": labsub
+      };
+
+      await axios.post(`http://localhost:1817/Admin/new-student/`,newstud);
+      console.log("Added Student Successfully");
+      e.target.reset();
+
+    } catch (err) {
+      console.log("Error in adding new student", err);
+    }
+  };
   useEffect(() => {
     if (selectedrollno !== null) {
       const student = students.find((s) => s.rollno === selectedrollno);
@@ -113,6 +158,66 @@ const AdminPortal = () => {
           </table>
         )}
       </div>
+
+      <div className="bg-white p-6 mt-8 rounded-lg shadow-md">
+        <button
+          onClick={() => setAddstud(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 font-semibold mb-4"
+        >
+          Add New Student
+        </button>
+
+        {addstud && (
+          <>
+            <h2 className="text-xl font-bold mb-4 text-gray-700">Add Student Form</h2>
+            <form onSubmit={handleaddstud} className="space-y-4">
+              {[
+                { label: 'Roll no', name: 'rollno', type: 'number' },
+                { label: 'Name', name: 'name', type: 'text' },
+                { label: 'Password', name: 'password', type: 'password' },
+                { label: 'Department', name: 'department', type: 'text' },
+                { label: 'Academic Year', name: 'academicYear', type: 'text' },
+                { label: 'Semester', name: 'sem', type: 'number' },
+                { label: 'Division', name: 'div', type: 'number' },
+                { label: 'Batch', name: 'batch', type: 'text' }
+              ].map((field, idx) => (
+                <div key={idx}>
+                  <label htmlFor={field.name} className="block font-medium text-gray-600">{field.label}:</label>
+                  <input
+                    type={field.type}
+                    id={field.name}
+                    name={field.name}
+                    placeholder={`Enter ${field.label.toLowerCase()} here`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                  />
+                </div>
+              ))}
+
+              <div>
+                <label className="block font-medium text-gray-600">Lab Subjects:</label>
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <input
+                    key={i}
+                    type="text"
+                    id={`labName${i}`}
+                    name={`labName${i}`}
+                    placeholder="Enter lab subject here"
+                    className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                  />
+                ))}
+              </div>
+
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 font-semibold"
+              >
+                Submit
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+
     </div>
   );
 };
