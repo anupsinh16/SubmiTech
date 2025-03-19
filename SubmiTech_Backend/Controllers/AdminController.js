@@ -1,6 +1,6 @@
 const Students = require("../Models/StudentModel");
 const Teachers = require("../Models/TeacherModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const FetchAllStudents = async(req,res) =>{

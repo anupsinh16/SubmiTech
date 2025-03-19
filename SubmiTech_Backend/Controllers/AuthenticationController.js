@@ -1,8 +1,9 @@
 const Students = require("../Models/StudentModel");
 const Teacher = require("../Models/TeacherModel");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Admin = require("../Models/AdminModel");
+
 
 const authenticateStudent = async (req, res) => {
     try {
