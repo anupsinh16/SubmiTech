@@ -10,7 +10,7 @@ const TeacherPortal2 = () => {
     useEffect(() => {
         const FetchStudents = async () => {
             try {
-                const response = await axios.get("http://localhost:1817/Teach/labstudents", {
+                const response = await axios.get("https://submitech-backend.onrender.com/Teach/labstudents", {
                     params: { batch: batch1 },
                 });
                 
@@ -37,7 +37,7 @@ const TeacherPortal2 = () => {
             );
             setStudentList(updatedList);
             
-            await axios.post("http://localhost:1817/Teach/updateStat", {
+            await axios.post("https://submitech-backend.onrender.com/Teach/updateStat", {
                 rollno: rollno,
                 batch: batch1,
                 labName: labName

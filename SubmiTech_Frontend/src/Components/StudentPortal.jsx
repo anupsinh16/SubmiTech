@@ -12,7 +12,7 @@ const StudentPortal = () => {
         if (user && user.rollno) {
             const FetchStudData = async () => {
                 try {
-                    const response = await axios.get("http://localhost:1817/Stud/student", {
+                    const response = await axios.get("https://submitech-backend.onrender.com/Stud/student", {
                         params: { rollno: user.rollno },
                     });
                     setStudData(response.data);
