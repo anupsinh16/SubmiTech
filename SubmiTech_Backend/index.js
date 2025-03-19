@@ -10,6 +10,7 @@ const AuthenticationRoutes = require("./Routes/AuthenticationRoutes");
 const TeachRoutes = require("./Routes/TeacherRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes");
 const cors = require("cors");
+const Admin = require("./Models/AdminModel")
 
 const PORT = 1817;
 const app = express(); // Define app first!
@@ -31,7 +32,6 @@ const ConnectDB = async () => {
     console.log("Database Connected");
 };
 
-// Start server **AFTER** connecting to DB
 ConnectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is listening on ${PORT}`);

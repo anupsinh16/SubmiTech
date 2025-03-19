@@ -129,7 +129,8 @@ const AdminPortal = () => {
                         <td className="border px-4 py-2">
                           <button
                             onClick={() => setSelectedrollno(stud.rollno)}
-                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                            className={`bg-green-500 text-white px-3 py-1 rounded  
+                              ${selectedrollno === stud.rollno ? "bg-red-500":"bg-green-500"}`}
                           >
                             Check
                           </button>
