@@ -85,9 +85,9 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <a href="#" className="text-pink-600 hover:underline">Forgot Password?</a>
-        </div>
+        </div> */}
       </div>
 
       {/* Error Modal */}

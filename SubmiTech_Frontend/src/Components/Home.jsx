@@ -4,25 +4,25 @@ import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  // const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.target.getBoundingClientRect();
-    const x = ((e.clientX - left - width / 2) / 10).toFixed(2);
-    const y = ((e.clientY - top - height / 2) / 10).toFixed(2);
-    setTilt({ x, y });
-  };
+  // const handleMouseMove = (e) => {
+  //   const { left, top, width, height } = e.target.getBoundingClientRect();
+  //   const x = ((e.clientX - left - width / 2) / 10).toFixed(2);
+  //   const y = ((e.clientY - top - height / 2) / 10).toFixed(2);
+  //   setTilt({ x, y });
+  // };
 
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
+  // const handleMouseLeave = () => {
+  //   setTilt({ x: 0, y: 0 });
+  // };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-500 to-blue-500 text-white p-8">
       <div className="max-w-4xl w-full bg-white text-gray-900 rounded-2xl shadow-lg p-6 flex flex-col items-center">
         <h1 className="text-4xl font-bold mb-4">Welcome to SubmiTech</h1>
         <p className="text-lg text-center mb-6">
-          Submit your assignments and projects seamlessly for PICT College.
+          Check and update your Submissions hustle free... 
         </p>
 
         {/* Fast & dynamic animated image with shadow */}
@@ -31,11 +31,8 @@ const HomePage = () => {
           alt="PICT College"
           className="w-64 rounded-3xl mb-6 transition-transform duration-150 ease-out 
                      shadow-2xl drop-shadow-lg border-sky-100 border-2"
-          style={{
-            transform: `rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) scale(1.1)`,
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+          
+          
         />
 
         <button

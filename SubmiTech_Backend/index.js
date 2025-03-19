@@ -11,8 +11,8 @@ const TeachRoutes = require("./Routes/TeacherRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes");
 const cors = require("cors");
 const Admin = require("./Models/AdminModel")
-
-const PORT = 1817;
+dotenv.config();
+const PORT = process.env.PORT || 1817;
 const app = express(); // Define app first!
 
 // Middleware
@@ -28,7 +28,7 @@ app.use('/Admin', AdminRoutes);
 
 // Database connection
 const ConnectDB = async () => {
-    await mongoose.connect('mongodb://localhost:27017/SubmiTech');
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("Database Connected");
 };
 
@@ -39,3 +39,4 @@ ConnectDB().then(() => {
 }).catch(err => {
     console.error("DB Connection Error:", err);
 });
+

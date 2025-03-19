@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 const AdminPortal = () => {
   const [students, setStudents] = useState([]);
@@ -10,6 +12,24 @@ const AdminPortal = () => {
   const [addstud, setAddstud] = useState(false);
   const [addteacher, setAddteacher] = useState(false);
   const [labBatchFields, setLabBatchFields] = useState([{ labName: '', batches: [''] }]);
+
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (!user) {
+      navigate("/admin");
+    }
+  }, [user, navigate]);
+  
+  if (!user) return null; // Avoid rendering anything if user is null
+  
+  
+  
 
   const handleStudent = async () => {
     try {
@@ -95,7 +115,22 @@ const AdminPortal = () => {
     }
   }, [selectedrollno, students]);
 
+  if (!user) {
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <p className="text-gray-800 text-lg font-semibold mb-4">Please login first</p>
+            <button
+                onClick={() => navigate("/admin-login")}
+                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
+            >
+                Go to login page
+            </button>
+        </div>
+    );
+}
+
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-blue-200 p-6">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">Admin Portal</h1>
 
