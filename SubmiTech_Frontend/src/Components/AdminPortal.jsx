@@ -8,6 +8,8 @@ const AdminPortal = () => {
   const [labs, setLabs] = useState([]);
   const [selectedrollno, setSelectedrollno] = useState(null);
   const [addstud, setAddstud] = useState(false);
+  const [addteacher, setAddteacher] = useState(false);
+  const [labBatchFields, setLabBatchFields] = useState([{ labName: '', batches: [''] }]);
 
   const handleStudent = async () => {
     try {
@@ -28,49 +30,64 @@ const AdminPortal = () => {
   };
 
   const handleaddstud = async (e) => {
-    e.preventDefault(); // Prevent page reload
-  
+    e.preventDefault();
     try {
-      const formData = new FormData(e.target); // e.target is the form element
-  
+      const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
-  
-      console.log("Form Data:", data);
 
-      const labsub = [
-        data.labName1,
-        data.labName2,
-        data.labName3,
-        data.labName4,
-        data.labName5
-      ]
-        .filter((name) => name && name.length > 0)
-        .map((name) => ({
-          labName: name,
-          checked: false
-        }));
+      const labsub = [1, 2, 3, 4, 5].map((i) => data[`labName${i}`])
+        .filter(Boolean)
+        .map((name) => ({ labName: name, checked: false }));
 
       const newstud = {
-        
-          "rollno":data.rollno,
-          "name":data.name,
-          "password":data.password,
-          "department":data.department,
-          "academicYear":data.academicYear,
-          "sem":data.sem,
-          "div":data.div,
-          "batch":data.batch,
-          "labsub": labsub
+        rollno: data.rollno,
+        name: data.name,
+        password: data.password,
+        department: data.department,
+        academicYear: data.academicYear,
+        sem: data.sem,
+        div: data.div,
+        batch: data.batch,
+        labsub,
       };
 
-      await axios.post(`http://localhost:1817/Admin/new-student/`,newstud);
-      console.log("Added Student Successfully");
+      await axios.post(`http://localhost:1817/Admin/new-student/`, newstud);
+      alert('Student added successfully');
       e.target.reset();
-
     } catch (err) {
-      console.log("Error in adding new student", err);
+      console.log('Error in adding new student', err);
     }
   };
+
+  const handleAddTeacher = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const teacher = {
+        name: data.name,
+        email: data.email,
+        department: data.department,
+        password: data.password,
+        cc: data.cc,
+        batchesAlloted: labBatchFields
+          .filter((field) => field.labName.trim().length > 0)
+          .map((field) => ({
+            labName: field.labName.trim(),
+            batch: field.batches.filter((b) => b.trim().length > 0),
+          })),
+      };
+
+      await axios.post('http://localhost:1817/Admin/new-teacher', teacher);
+      alert('Teacher added successfully');
+      e.target.reset();
+      setLabBatchFields([{ labName: '', batches: [''] }]);
+    } catch (err) {
+      console.error('Error adding teacher', err);
+    }
+  };
+
   useEffect(() => {
     if (selectedrollno !== null) {
       const student = students.find((s) => s.rollno === selectedrollno);
@@ -79,32 +96,98 @@ const AdminPortal = () => {
   }, [selectedrollno, students]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Admin Portal</h1>
-      
-      <div className="flex flex-col md:flex-row gap-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-blue-200 p-6">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">Admin Portal</h1>
+
+      <div className="max-w-6xl mx-auto flex flex-col gap-8">
         {/* Students Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/2">
-          <button onClick={handleStudent} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full font-semibold">
-            Display all Students
-          </button>
-          {students.length > 0 && (
-            <table className="w-full mt-4 border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="p-2 border">Student Name</th>
-                  <th className="p-2 border">Check Status</th>
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <div className="text-center mb-4">
+            <button
+              onClick={handleStudent}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
+            >
+              Display All Students
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Student Table */}
+            {students.length > 0 && (
+              <div className="flex-1 overflow-x-auto">
+                <table className="w-full text-sm border border-gray-300 rounded-lg overflow-hidden">
+                  <thead className="bg-blue-100 text-gray-700">
+                    <tr>
+                      <th className="py-2 px-4 border">Student Name</th>
+                      <th className="py-2 px-4 border">Check Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {students.map((stud) => (
+                      <tr key={stud._id} className="text-center hover:bg-gray-100">
+                        <td className="border px-4 py-2">{stud.name}</td>
+                        <td className="border px-4 py-2">
+                          <button
+                            onClick={() => setSelectedrollno(stud.rollno)}
+                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                          >
+                            Check
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Right-Side Modal */}
+            {labs.length > 0 && (
+              <div className="bg-white p-6 rounded-xl shadow-xl w-full md:w-1/2 border border-gray-200">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">Lab Details</h3>
+                <table className="w-full text-sm border border-gray-300 rounded-lg overflow-hidden">
+                  <thead className="bg-green-100 text-gray-700">
+                    <tr>
+                      <th className="py-2 px-4 border">Lab Name</th>
+                      <th className="py-2 px-4 border">Checked</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {labs.map((sub, i) => (
+                      <tr key={i} className="text-center hover:bg-gray-50">
+                        <td className="border px-4 py-2">{sub.labName}</td>
+                        <td className="border px-4 py-2">{sub.checked ? '✅' : '❌'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Teachers Section */}
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <div className="text-center mb-4">
+            <button
+              onClick={handleTeacher}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-semibold"
+            >
+              Display All Teachers
+            </button>
+          </div>
+
+          {teachers.length > 0 && (
+            <table className="w-full text-sm border border-gray-300 rounded-lg overflow-hidden">
+              <thead className="bg-purple-100 text-gray-700">
+                <tr>
+                  <th className="py-2 px-4 border">Teacher Name</th>
                 </tr>
               </thead>
               <tbody>
-                {students.map((stud) => (
-                  <tr key={stud._id} className="hover:bg-gray-100">
-                    <td className="p-2 border text-center">{stud.name}</td>
-                    <td className="p-2 border text-center">
-                      <button onClick={() => setSelectedrollno(stud.rollno)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
-                        Check
-                      </button>
-                    </td>
+                {teachers.map((teacher) => (
+                  <tr key={teacher._id} className="text-center hover:bg-gray-50">
+                    <td className="border px-4 py-2">{teacher.name}</td>
                   </tr>
                 ))}
               </tbody>
@@ -112,114 +195,168 @@ const AdminPortal = () => {
           )}
         </div>
 
-        {/* Lab Details Section */}
-        {labs.length > 0 && (
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/2">
-            <h3 className="text-xl font-semibold text-gray-700 mb-3">Lab Details</h3>
-            <table className="w-full border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="p-2 border">Lab Name</th>
-                  <th className="p-2 border">Checked</th>
-                </tr>
-              </thead>
-              <tbody>
-                {labs.map((sub) => (
-                  <tr key={sub._id} className="hover:bg-gray-100">
-                    <td className="p-2 border text-center">{sub.labName}</td>
-                    <td className="p-2 border text-center">{sub.checked ? '✅' : '❌'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* Add Student */}
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <div className="text-center mb-4">
+            <button
+              onClick={() => setAddstud(!addstud)}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
+            >
+              {addstud ? 'Hide Student Form' : 'Add New Student'}
+            </button>
           </div>
-        )}
-      </div>
 
-      {/* Teachers Section */}
-      <div className="bg-white p-6 rounded-lg shadow-md mt-8">
-        <button onClick={handleTeacher} className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 w-full font-semibold">
-          Display all Teachers
-        </button>
-        {teachers.length > 0 && (
-          <table className="w-full mt-4 border-collapse border border-gray-200">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2 border">Teacher Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teachers.map((teacher) => (
-                <tr key={teacher._id} className="hover:bg-gray-100">
-                  <td className="p-2 border text-center">{teacher.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      <div className="bg-white p-6 mt-8 rounded-lg shadow-md">
-        <button
-          onClick={() => setAddstud(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 font-semibold mb-4"
-        >
-          Add New Student
-        </button>
-
-        {addstud && (
-          <>
-            <h2 className="text-xl font-bold mb-4 text-gray-700">Add Student Form</h2>
-            <form onSubmit={handleaddstud} className="space-y-4">
+          {addstud && (
+            <form onSubmit={handleaddstud} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { label: 'Roll no', name: 'rollno', type: 'number' },
+                { label: 'Roll No', name: 'rollno', type: 'number' },
                 { label: 'Name', name: 'name', type: 'text' },
                 { label: 'Password', name: 'password', type: 'password' },
                 { label: 'Department', name: 'department', type: 'text' },
                 { label: 'Academic Year', name: 'academicYear', type: 'text' },
                 { label: 'Semester', name: 'sem', type: 'number' },
                 { label: 'Division', name: 'div', type: 'number' },
-                { label: 'Batch', name: 'batch', type: 'text' }
-              ].map((field, idx) => (
-                <div key={idx}>
-                  <label htmlFor={field.name} className="block font-medium text-gray-600">{field.label}:</label>
+                { label: 'Batch', name: 'batch', type: 'text' },
+              ].map((field, i) => (
+                <div key={i}>
+                  <label className="block mb-1 font-medium">{field.label}</label>
                   <input
                     type={field.type}
-                    id={field.name}
                     name={field.name}
-                    placeholder={`Enter ${field.label.toLowerCase()} here`}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                    className="w-full px-4 py-2 border rounded-lg focus:ring focus:outline-none"
                   />
                 </div>
               ))}
 
-              <div>
-                <label className="block font-medium text-gray-600">Lab Subjects:</label>
+              <div className="col-span-full">
+                <label className="block mb-2 font-medium">Lab Subjects</label>
                 {[1, 2, 3, 4, 5].map((i) => (
                   <input
                     key={i}
-                    type="text"
-                    id={`labName${i}`}
                     name={`labName${i}`}
-                    placeholder="Enter lab subject here"
-                    className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                    placeholder="Enter lab subject"
+                    className="w-full mb-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring"
                   />
                 ))}
               </div>
 
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 font-semibold"
+                className="col-span-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
               >
                 Submit
               </button>
             </form>
-          </>
-        )}
-      </div>
+          )}
+        </div>
 
+        {/* Add Teacher */}
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <div className="text-center mb-4">
+            <button
+              onClick={() => setAddteacher(!addteacher)}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-semibold"
+            >
+              {addteacher ? 'Hide Teacher Form' : 'Add New Teacher'}
+            </button>
+          </div>
+
+          {addteacher && (
+            <form onSubmit={handleAddTeacher} className="space-y-4">
+              {[
+                { label: 'Name', name: 'name' },
+                { label: 'Email', name: 'email' },
+                { label: 'Department', name: 'department' },
+                { label: 'Password', name: 'password', type: 'password' },
+                { label: 'CC', name: 'cc' },
+              ].map((field, i) => (
+                <div key={i}>
+                  <label className="block mb-1 font-medium">{field.label}</label>
+                  <input
+                    type={field.type || 'text'}
+                    name={field.name}
+                    className="w-full px-4 py-2 border rounded-lg focus:ring focus:outline-none"
+                  />
+                </div>
+              ))}
+
+              <div>
+                <label className="block font-medium mb-2">Batches Allotted:</label>
+                {labBatchFields.map((field, i) => (
+                  <div key={i} className="p-4 bg-gray-50 rounded-lg border mb-4">
+                    <input
+                      type="text"
+                      placeholder="Lab Name"
+                      value={field.labName}
+                      onChange={(e) => {
+                        const updated = [...labBatchFields];
+                        updated[i].labName = e.target.value;
+                        setLabBatchFields(updated);
+                      }}
+                      className="w-full mb-2 px-4 py-2 border rounded-lg"
+                    />
+                    {field.batches.map((batch, j) => (
+                      <div key={j} className="flex items-center gap-2 mb-2">
+                        <input
+                          type="text"
+                          placeholder={`Batch ${j + 1}`}
+                          value={batch}
+                          onChange={(e) => {
+                            const updated = [...labBatchFields];
+                            updated[i].batches[j] = e.target.value;
+                            setLabBatchFields(updated);
+                          }}
+                          className="flex-1 px-4 py-2 border rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = [...labBatchFields];
+                            updated[i].batches.splice(j, 1);
+                            setLabBatchFields(updated);
+                          }}
+                          className="text-red-500"
+                        >
+                          ❌
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = [...labBatchFields];
+                        updated[i].batches.push('');
+                        setLabBatchFields(updated);
+                      }}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      ➕ Add Batch
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setLabBatchFields([...labBatchFields, { labName: '', batches: [''] }])
+                  }
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                >
+                  ➕ Add Another Lab
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold"
+              >
+                Submit
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default AdminPortal; 
+export default AdminPortal;

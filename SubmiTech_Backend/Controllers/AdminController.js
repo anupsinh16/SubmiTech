@@ -66,6 +66,44 @@ const AddNewStudent = async(req,res) =>{
 }
 const AddNewTeacher = async(req,res) =>{
 
+    try{
+        const {name,email,department,password,batchesAlloted,cc} = req.body;
+        
+        const teacherexists = await Teachers.findOne({email : email});
+
+        if(!teacherexists){
+            const hashedpassword = await bcrypt.hash(password,10);
+
+            const newteacher = new Teachers({
+                name : name,
+                email : email,
+                passwords : hashedpassword,
+                department : department,
+                password : password,
+                batchesAlloted : batchesAlloted,
+                cc : cc
+            });
+            
+
+            const savedTeacher = await newteacher.save();
+
+            const token = jwt.sign({teacherid : newteacher._id},"randomsecret");
+
+            return res.status(200).json({
+                token : token,
+                Teacher : savedTeacher,
+            });
+
+
+        }
+        else{
+            res.status(400).json("Teacher already exists.");
+        }
+    }
+    catch(err){
+        res.status(400).json({message:err.message});
+    }
+
 }
 
 module.exports = {FetchAllStudents,FetchAllTeachers,AddNewStudent,AddNewTeacher};
