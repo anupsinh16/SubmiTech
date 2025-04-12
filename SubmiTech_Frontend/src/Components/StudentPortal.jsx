@@ -16,18 +16,13 @@ const StudentPortal = () => {
                         params: { rollno: user.rollno },
                     });
                     setStudData(response.data);
+                    console.log("Fetched Student Data:", response.data);
                 } catch (err) {
                     console.error("Error fetching data:", err);
                 }
             };
             FetchStudData();
         }
-
-        // Prevent going back after logout
-        // window.history.replaceState(null, "", window.location.href);
-        // window.onpopstate = () => {
-        //     setUser(null); // Ensure user data is cleared on back navigation
-        // };
     }, [user]);
 
     const handleLogout = () => {
@@ -59,7 +54,7 @@ const StudentPortal = () => {
             {!StudData ? (
                 <p className="text-gray-800 text-lg font-semibold">Loading...</p>
             ) : (
-                <div className="relative bg-white shadow-2xl rounded-2xl p-8 max-w-xl w-full border border-gray-300">
+                <div className="relative bg-white shadow-2xl rounded-2xl p-8 max-w-3xl w-full border border-gray-300">
                     <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-4 drop-shadow-lg">
                         Welcome, {StudData.name}
                     </h1>
@@ -70,6 +65,7 @@ const StudentPortal = () => {
                         <p className="text-lg"><strong>Semester:</strong> {StudData.sem}</p>
                         <p className="text-lg"><strong>Division:</strong> {StudData.division}</p>
                         <p className="text-lg"><strong>Batch:</strong> {StudData.batch}</p>
+                        <p className="text-lg"><strong>Overall Attendance:</strong> {StudData.overallAttendance || 0}%</p>
                     </div>
 
                     <h2 className="mt-6 text-xl font-semibold text-gray-900 drop-shadow-lg">Lab Subjects</h2>
@@ -82,7 +78,7 @@ const StudentPortal = () => {
                         </thead>
                         <tbody>
                             {StudData.labSub.map((lab, index) => (
-                                <tr key={lab._id} className={`text-center ${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}`}>
+                                <tr key={index} className={`text-center ${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}`}>
                                     <td className="border p-3 text-lg font-medium">{lab.labName}</td>
                                     <td className="border p-3 text-lg font-bold text-green-600 drop-shadow-md">
                                         {lab.checked ? "✔️" : "❌"}
@@ -92,7 +88,46 @@ const StudentPortal = () => {
                         </tbody>
                     </table>
 
-                    {/* Logout Button */}
+                    <h2 className="mt-6 text-xl font-semibold text-gray-900 drop-shadow-lg">Lab-wise Attendance</h2>
+                    <table className="w-full mt-3 border-collapse border border-gray-400 shadow-lg rounded-lg">
+                        <thead>
+                            <tr className="bg-blue-500 text-white">
+                                <th className="border p-3 text-lg">Lab Name</th>
+                                <th className="border p-3 text-lg">Attendance (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {StudData.labWiseAttendance?.map((entry, index) => (
+                                <tr key={index} className={`text-center ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
+                                    <td className="border p-3 text-lg">{entry.labName}</td>
+                                    <td className="border p-3 text-lg">{entry.attendance}%</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <h2 className="mt-6 text-xl font-semibold text-gray-900 drop-shadow-lg">Extra Assignments</h2>
+                    <table className="w-full mt-3 border-collapse border border-gray-400 shadow-lg rounded-lg">
+                        <thead>
+                            <tr className="bg-red-500 text-white">
+                                <th className="border p-3 text-lg">Lab Name</th>
+                                <th className="border p-3 text-lg">Reason</th>
+                                <th className="border p-3 text-lg">Description</th>
+                                <th className="border p-3 text-lg">Date Assigned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {StudData.extraAssignments?.map((assignment, index) => (
+                                <tr key={index} className={`text-center ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
+                                    <td className="border p-3 text-lg">{assignment.labName}</td>
+                                    <td className="border p-3 text-lg">{assignment.reason}</td>
+                                    <td className="border p-3 text-lg">{assignment.description}</td>
+                                    <td className="border p-3 text-lg">{new Date(assignment.dateAssigned).toLocaleDateString()}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
                     <div className="flex justify-center mt-6">
                         <button 
                             onClick={handleLogout} 

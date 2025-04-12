@@ -1,9 +1,30 @@
 const mongoose = require("mongoose");
 
-const subObj ={
-    labName : String,
-    checked : Boolean
-}
+const subObj = {
+    labName: String,
+    checked: Boolean
+};
+
+const labAttendanceObj = {
+    labName: String,
+    attendance: {
+        type: Number,
+        default: 0
+    }
+};
+
+const extraAssignmentObj = {
+    labName: {
+        type: String,
+        required: true
+    },
+    reason: String,
+    description: String,
+    dateAssigned: {
+        type: Date,
+        default: Date.now
+    }
+};
 
 const StudentModel = new mongoose.Schema(
     {
@@ -15,11 +36,12 @@ const StudentModel = new mongoose.Schema(
 
         name: {
             type: String,
-            required: true,
+            required: true
         },
-        passwords : {
-            type : String,
-            required : true
+
+        passwords: {
+            type: String,
+            required: true
         },
 
         department: {
@@ -33,22 +55,42 @@ const StudentModel = new mongoose.Schema(
 
         sem: {
             type: Number,
-            required: true,
+            required: true
         },
-        
+
         division: {
             type: Number,
-            required: true,
+            required: true
         },
 
         batch: {
             type: String,
-            required: true,
+            required: true
         },
 
         labSub: {
             type: [subObj],
             required: true
+        },
+
+        attendance: {
+            type: Number,
+            default: 0
+        },
+
+        overallAttendance: {
+            type: Number,
+            default: 0
+        },
+
+        labWiseAttendance: {
+            type: [labAttendanceObj],
+            default: []
+        },
+
+        extraAssignments: {
+            type: [extraAssignmentObj],
+            default: []
         }
     },
     { timestamps: true }

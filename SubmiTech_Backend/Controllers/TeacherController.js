@@ -51,6 +51,38 @@ const FetchStudentList = async(req,res) => {
     }
 }
 
-module.exports = { FetchTeacherInfo, UpdateStatus , FetchStudentList};
+const AddExtraAssignment = async (req, res) => {
+    try {
+        const { rollno, labName, reason, description } = req.body;
+
+        const assignment = {
+            labName,
+            reason,
+            description,
+            timestamp: new Date()
+        };
+
+        const updated = await Students.updateOne(
+            { rollno },
+            { $push: { extraAssignments: assignment } }
+        );
+
+        if (updated.modifiedCount === 0) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        res.status(200).json({ message: "Assignment added successfully" });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
+
+module.exports = {
+    FetchTeacherInfo,
+    UpdateStatus,
+    FetchStudentList,
+    AddExtraAssignment,
+};
+
 
 
