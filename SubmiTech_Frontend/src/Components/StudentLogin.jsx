@@ -19,7 +19,7 @@ const StudentLogin = () => {
     e.preventDefault(); 
     
     try {
-      const response = await axios.get("https://submitech-backend.onrender.com/Authentication/authstud", {
+      const response = await axios.get("http://localhost:1817/Authentication/authstud", {
         params: { rollno: enrollment, password },
       });
 

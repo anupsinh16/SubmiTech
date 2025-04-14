@@ -33,7 +33,7 @@ const AdminPortal = () => {
 
   const handleStudent = async () => {
     try {
-      const response = await axios.get('https://submitech-backend.onrender.com/Admin/all-students');
+      const response = await axios.get('http://localhost:1817/Admin/all-students');
       setStudents(response.data);
     } catch (err) {
       console.error('Cannot fetch students:', err);
@@ -42,7 +42,7 @@ const AdminPortal = () => {
 
   const handleTeacher = async () => {
     try {
-      const response = await axios.get('https://submitech-backend.onrender.com/Admin/all-teachers');
+      const response = await axios.get('http://localhost:1817/Admin/all-teachers');
       setTeachers(response.data);
     } catch (err) {
       console.error('Error in fetching teacher list:', err);
@@ -71,7 +71,7 @@ const AdminPortal = () => {
         labsub,
       };
 
-      await axios.post(`https://submitech-backend.onrender.com/Admin/new-student/`, newstud);
+      await axios.post(`http://localhost:1817/Admin/new-student/`, newstud);
       alert('Student added successfully');
       e.target.reset();
     } catch (err) {
@@ -99,7 +99,7 @@ const AdminPortal = () => {
           })),
       };
 
-      await axios.post('https://submitech-backend.onrender.com/Admin/new-teacher', teacher);
+      await axios.post('http://localhost:1817/Admin/new-teacher', teacher);
       alert('Teacher added successfully');
       e.target.reset();
       setLabBatchFields([{ labName: '', batches: [''] }]);

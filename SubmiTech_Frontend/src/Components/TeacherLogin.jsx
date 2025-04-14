@@ -19,7 +19,7 @@ const TeacherLogin = () => {
     e.preventDefault(); 
     
     try {
-      const response = await axios.get("https://submitech-backend.onrender.com/Authentication/authteacher", {
+      const response = await axios.get("http://localhost:1817/Authentication/authteacher", {
         params: { email: email, password },
       });
 

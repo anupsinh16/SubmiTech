@@ -12,7 +12,7 @@ const TeacherPortal = () => {
     useEffect(() => {
         const FetchTeacherData = async () => {
             try {
-                const response = await axios.get("https://submitech-backend.onrender.com/Teach/labs", {
+                const response = await axios.get("http://localhost:1817/Teach/labs", {
                     params: { email: "richard.green@example.com" },
                 });
                 setTeacherData(response.data);
