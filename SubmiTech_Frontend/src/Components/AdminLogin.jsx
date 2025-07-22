@@ -19,7 +19,7 @@ const AdminLogin = () => {
     e.preventDefault(); 
     
     try {
-      const response = await axios.get("http://localhost:1817/Authentication/authadmin", {
+      const response = await axios.get("https://submitech-backend.onrender.com/Authentication/authadmin", {
         params: { email: email, password },
       });
 

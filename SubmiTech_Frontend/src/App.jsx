@@ -26,9 +26,12 @@ function App() {
                 <Route path="/teacher-portal" element={<TeacherPortal />} />
                 <Route path="/teacher-portal2" element={<TeacherPortal2 />} />
                 <Route path="/admin" element={<AdminLogin/>} />
+                <Route path="/admin" element={<AdminLogin/>} />
                 <Route path="/admin-portal" element={<AdminPortal/>} />
                 <Route path="/add-excel" element={<ExcelUpload/>} />
                 <Route path="/admin" element={<ExcelUpload/>} />
+                {/* <Route path="/add-excel" element={<ExcelUpload/>} /> */}
+                {/* <Route path="/admin" element={<ExcelUpload/>} /> */}
                 
                 <Route path="*" element={<h1 className="text-center text-red-500 font-bold text-3xl mt-10">404 - Page Not Found</h1>} />
             </Routes> 
