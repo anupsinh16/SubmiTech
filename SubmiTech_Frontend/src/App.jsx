@@ -11,6 +11,7 @@ import TeacherLogin from './Components/TeacherLogin';
 import AdminPortal from './Components/AdminPortal';
 import AdminLogin from './Components/AdminLogin';
 import ExcelUpload from './Components/ExcelUpload';
+import FooterNew from './Components/FooterNew.jsx';
 
 function App() {
     return (
@@ -24,13 +25,14 @@ function App() {
                 <Route path='/teacher' element={<TeacherLogin/>}/>
                 <Route path="/teacher-portal" element={<TeacherPortal />} />
                 <Route path="/teacher-portal2" element={<TeacherPortal2 />} />
-                {/* <Route path="/admin" element={<AdminLogin/>} /> */}
+                <Route path="/admin" element={<AdminLogin/>} />
                 <Route path="/admin-portal" element={<AdminPortal/>} />
-                {/* <Route path="/add-excel" element={<ExcelUpload/>} /> */}
+                <Route path="/add-excel" element={<ExcelUpload/>} />
                 <Route path="/admin" element={<ExcelUpload/>} />
                 
                 <Route path="*" element={<h1 className="text-center text-red-500 font-bold text-3xl mt-10">404 - Page Not Found</h1>} />
             </Routes> 
+            <FooterNew/>
         </BrowserRouter>
     );
 }

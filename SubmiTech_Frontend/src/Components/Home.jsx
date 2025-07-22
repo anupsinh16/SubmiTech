@@ -27,7 +27,7 @@ const HomePage = () => {
 
         {/* Fast & dynamic animated image with shadow */}
         <img
-          src="https://pict.edu/images/pic.jpg"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s"
           alt="PICT College"
           className="w-64 rounded-3xl mb-6 transition-transform duration-150 ease-out 
                      shadow-2xl drop-shadow-lg border-sky-100 border-2"
